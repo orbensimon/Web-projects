@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Demo Signup</title>
+    <link href="F:/Web/Labs/bootstrap.min.css" rel="stylesheet" />
+    <script src="F:/Web/Labs/Lab3/jquery-3.0.0.min.js"></script>
+    <style>
+	
+	
+	.vertical
+	{
+		border-left: 8px solid white;
+		top: 0;
+		position: absolute;
+		height:1200px;
+		left: 50%;
+		padding:4rem 2rem;
+		
+	}
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+
+
+            .tooltip .tooltiptext {
+                visibility: hidden;
+                width: 120px;
+                background-color: white;
+                color: #fff;
+                text-align: center;
+                padding: 5px 0;
+                border-radius: 6px;
+                top: -5px;
+                left: 105%;
+            }
+
+            .tooltip:hover .tooltiptext {
+                visibility: visible;
+            }
+    </style>
+    <script>
+        var usersObj = '{"users":[' +
+            '{}]}';
+        var jsonObj = JSON.parse(usersObj);
+        var userNumber = 0;
+        $(document).ready(function () {
+            $(".form-control").focusout(function () {
+                var nameVal = $(this).val();
+                if (nameVal.length > 0)
+                    $(this).addClass("form-control is-valid");
+                else
+                    $(this).addClass("form-control is-invalid");
+            })
+
+            //	$("#name").onclick(function (){
+
+
+
+
+
+
+            //})
+            $("#formsubmit").on("click", function (e){
+                var check = checkInputValidation();
+                if(!check)
+                {
+                    e.preventDefault();
+                    alert("Could not submit form./n please check input validation");
+                    return;
+                }
+                //jsonObj["users"][userNumber] = {fullName:$("#name"}.val(),emailAddress:$("#email").val(),websiteAddress:$("#website").val(),age:$("#age").val(),userName:$("#username").val(),password:$("#password").val()};
+
+                jsonObj["users"][userNumber]={fullName:$("#name").val(),emailAddress:$("#email").val(),websiteAddress:$("#website").val(),age:$("#age").value,userName:$("#username").val(),password:$("#password").val()};
+                var jsonFormat = JSON.stringify(jsonObj);
+                localStorage.setItem("Users",jsonFormat);
+				userNumber++;
+				$(".form-control").val("");
+				
+            })
+			
+			$("#login").on("click", function () {
+				if(userNumber==0)
+				{
+					alert("User does not exist.\nPlz sign-up first")
+					return;
+				}
+				else if($("#loginusername").val().length > 0 && $("#loginpassword").val().length > 6)
+				{
+					var usersJson = localStorage.getItem("Users");
+					var userObjects = JSON.parse(usersJson);
+					$.each(userObjects["users"], function(i,u) {
+						if(u["userName"] == $("#loginusername").val())
+						{
+							if(u["password"] == $("#loginpassword").val())
+							{
+								alert("You are loged-in");
+								console.log(i);
+								return;
+							}
+							else
+							{
+								alert("Wrong password");
+								return;
+							}
+						}
+					
+					
+					})
+					
+				}
+				alert("User name does not exist");
+			})
+            
+
+
+
+        });
+
+
+        function checkInputValidation() {
+            if ($("#name").val().length == 0)
+                return false;
+            if ($("#email").val().length == 0)
+                return false;
+            if ($("#website").val().length == 0)
+                return false;
+            if ($("#age").val() == 0)
+                return false;
+            if (userNumber > 0) {
+
+                var username = $("#username").val();
+                var userObjects = localStorage.getItem("Users");
+                userJsonObject = JSON.parse(userObjects);
+                $.each(userJsonObject["users"], function (i, u) {
+
+                    if (u["userName"] == username) {
+
+                        alert("Username already exist");
+                        return false;
+
+                    }
+
+                })
+                // for(var proprety in userJsonObject["users"])
+                // {
+                //     if(proprety=="userName")
+                //     {
+                //         if(property["userName"]==username)
+                //         {
+                //             alert("Username already exist");
+                //             return false;
+                //         }
+                //
+                //      }
+                //  }
+
+
+            }
+
+            if ($("#password").val().length < 6) {
+                alert("Password must be at least 6 charecters long");
+                return false;
+            }
+            return true;
+
+        }
+        //לא עובד עם כפתור סבמיט לשאול לגבי זה
+       /* function submitForm() {
+            var check = checkInputValidation();
+            if (!check) {
+                //e.preventDefault();
+                alert("Could not submit form.\n please check input validation.");
+                return;
+            }
+            jsonObj["users"][userNumber] = { fullName: $("#name").val(), emailAddress: $("#email").val(), websiteAddress: $("#website").val(), age: $("#age").val(), userName: $("#username").val(), password: $("#password").val() };
+            userNumber++;
+            var jsonFormat = JSON.stringify(jsonObj);
+            localStorage.setItem("Users", jsonFormat);
+
+        }*/
+
+
+
+
+
+
+    </script>
+
+
+
+
+</head>
+
+
+<body>
+    <div class="jumbotron">
+        <h1 class="display-3">Signup</h1>
+    </div>
+    <div class="jumbotron" style='height:50px'>
+        <p class="lead"><large>User info</large></h2>
+    </div>
+    <form>
+        <label class="col-form-label">Full name:</label>
+        <input type='text' class="form-control" style='width:300px' id="name" required pattern="[A-Za-z]+"></input>
+            
+        <label class="col-form-label">Email address:</label>
+        <input type="email" class="form-control" style='width:300px' id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"></input>
+
+        <label class="col-form-label">Website address:</label>
+        <input type='url' class="form-control" style='width:300px' id="website"></input>
+
+        <label class="col-form-label">Age:</label>
+        <input type='number' class="form-control" style='width:300px'></input>
+
+        <label class="col-form-label">User name:</label>
+        <input type='text' class="form-control" style='width:300px' id="username"></input>
+
+        <label class="col-form-label">Password:</label>
+        <input type='password' class="form-control" style='width:300px' id="password"></input>
+
+        <label class="col-form-label">Press submit button to signup:</label>
+        <br>
+        <button type="button" class="btn btn-primary" id="formsubmit">Submit</button>
+		
+    </form>
+	<div class="vertical">
+		<h1 class="display-3">Already signed?</h1>
+		<div  style='height:50px; padding-top:150px'>
+			<p class="lead"><large>Login</large></h2>
+		</div>
+		<div style='height:50px; padding-top:100px'>
+			<label class="col-form-label">User name:</label>
+			<input type='text' class="form-control" style='width:300px' id="loginusername"></input>
+
+			<label class="col-form-label">Password:</label>	
+			<input type='password' class="form-control" style='width:300px' id="loginpassword"></input>
+			<br>
+			<button type="button" class="btn btn-primary" id="login">Login</button>
+		
+		</div>
+		
+	</div>
+	
+
+
+
+</body>
+
+
+
+	</head>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Photos slideshow</title>
+		<style>
+			.image
+			{
+				height: 55px;	
+				width: 55px;
+				border: 2px solid black;
+				border-radius: 0.75rem;
+				margin: 0px auto;
+				padding:1px;
+			}
+			.image:hover
+			{
+				cursor: pointer;
+				//transform: scaleY(1.5);
+				transform: scale3d(1.5,1.5,1.5);
+			
+			}
+			#slideshow
+			{
+				
+				border: 2px solid white;
+				display: flex;
+				padding-left: 35%;
+				border-radius: 0.75rem;
+				background-color: white;
+			
+			}
+			#mainphoto
+			{
+				height: 500px;
+				width: 500px;
+				margin: 10px auto;
+			}
+			
+			
+		
+		
+		
+		
+		</style>
+		<script src="F:/Web/Labs/Lab3/jquery-3.0.0.min.js"></script>
+		<script>
+			$(document).ready(function () {
+            
+			$(".image").on("click", function(){
+				var imgg = $(this).attr("src");
+				var heading = $(this).attr("name");
+				$("h1").html(heading);
+				$("#mainphoto").html($('<img>',{src:imgg,style:'width:500px;height:500px'}));
+			
+			
+			
+			
+			})
+			
+			
+			
+			
+        });
+			
+			
+			
+			
+		
+		</script>
+	
+	</head>
+	
+	
+	<body>
+		<h1 style="margin:10px auto;text-align:center"></h1>
+		<div id="mainphoto">
+			
+		
+		
+		
+		
+		
+		</div>
+		<div id="slideshow">
+				<div class="smallimage">
+					
+						<image name="First image" class="image" src="C:/Users/j/Desktop/שנה ה'/Web/Labs/llab5/t.jpg"></image>
+					
+				</div>		
+				<div class="smallimage">
+					
+						<a><image name="Second image" class="image" src="C:/Users/j/Desktop/שנה ה'/Web/Labs/llab5/t2.jpg"></image></a>
+					
+				</div>
+				
+				<div class="smallimage">
+					
+						<a><image name="Third image" class="image" src="C:/Users/j/Desktop/שנה ה'/Web/Labs/llab5/t3.jpg"></image></a>
+					
+				</div>
+				
+				<div class="smallimage">
+					
+					<a><image name="Fourth image" class="image" src="C:/Users/j/Desktop/שנה ה'/Web/Labs/llab5/t4.jpg"></image></a>
+					
+				</div>
+				
+				<div class="smallimage">
+				
+					<a><image name="Fifth image" class="image" src="C:/Users/j/Desktop/שנה ה'/Web/Labs/llab5/t5.jpg"></image></a>
+					
+				</div>
+				
+				<div class="smallimage">
+					
+					<a><image name="Sixth image" class="image" src="C:/Users/j/Desktop/שנה ה'/Web/Labs/llab5/t6.jpg"></image></a>
+					
+				</div>
+			
+		
+		</div>
+	
+	</body>
+
+
+
+</html>

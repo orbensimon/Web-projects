@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Students info</title>
+    <style>
+        #heading {
+            width: 100%;
+            height: 100px;
+            background-color: lightblue;
+            font-size: 50px;
+            text-align: center;
+        }
+
+        table, th, td {
+            border: 2px solid black;
+            margin: 20px auto;
+            padding: 20px 10px 20px 10px;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+            [type=button], td:hover {
+                cursor: pointer;
+            }
+
+                [type=button]:active {
+                    transform: translateY(2px);
+                }
+
+
+        #parentFormElem {
+            margin: 20px auto;
+            padding: 20px 10px 20px 10px;
+            width: 250px;
+            height: 250px;
+        }
+    </style>
+
+
+
+    <script src="F:/Web/Labs/jquery-3.0.0.min.js" ;></script>
+    <script>
+        var studentsList = '{"stdList":[' +
+            '{}]}';
+        var studentCounet = 0;
+        var updateStudentIndex = undefined;
+        var jsonObj = JSON.parse(studentsList);
+        $(document).ready(function () {
+            $("#studentInfo").hide();
+            $("#parentFormElem").hide();
+            if (studentCounet == 0) {
+                //
+                //$("#tableDiv").text("לא נמצאו סטודנטים!");
+            }
+            else
+                $("#Table").show();
+
+
+            /* $("#editStudent").click(function edit() {
+
+                 alert("snmsjkdefnjksdfndfjk");
+
+             })
+             */
+
+            $("#Table").on("click", "td", function () {
+                var $tr = $(this).closest('tr');
+                var myRow = $tr.index();
+                updateStudentIndex = myRow;
+                $("#parentFormElem").show();
+            })
+
+
+            $("#update").on("click", function () {
+                jsonObj["stdList"][updateStudentIndex].firstName = $("#UstdName").val();
+                jsonObj["stdList"][updateStudentIndex].lastName = $("#UstdLastName").val();
+                jsonObj["stdList"][updateStudentIndex].age = $("#UstdAge").val();
+                jsonObj["stdList"][updateStudentIndex].profession = $("#UstdPref").val();
+
+                $("#parentFormElem").hide();
+                localStorage.setItem("Students", JSON.stringify(jsonObj));
+                var tableRow = $("#Table").find("tr").eq(updateStudentIndex+1).find("td");
+				alert($(tableRow).text());
+                $(tableRow).eq(1).text($("#UstdName").val());
+                $(tableRow).eq(2).text($("#UstdLastName").val());
+                $(tableRow).eq(3).text($("#UstdAge").val());
+                $(tableRow).eq(4).text($("#UstdPref").val());
+				$("input:text").val("");
+				
+
+
+            })
+
+
+        });
+
+        function addStudentInfo() {
+            $("#studentInfo").slideDown();
+        }
+        function submitStudent() {
+            jsonObj["stdList"][studentCounet] = { firstName: $("#stdName").val(), lastName: $("#stdLastName").val(), age: $("#stdAge").val(), profession: $("#stdPref").val() };
+            studentCounet++;
+            $("#studentInfo").slideUp();
+            var s = "<tr>";
+            s += "<td class='editStudent'>" + studentCounet + "</td>"
+            var info = jsonObj["stdList"][studentCounet - 1];
+            for (var propretyName in info) {
+                s += "<td title='Click to edit'>" + info[propretyName] + "</td>";
+            }
+            s += "</tr>";
+            $("#studentElement").append(s);
+            localStorage.setItem("Students", JSON.stringify(jsonObj));
+            $("input:text").val("");
+            //$("#tableDiv").text("");
+            //$("#Table").show();
+        }
+
+
+
+    </script>
+</head>
+<body>
+    <div id="heading">רשימת סטודנטים</div>
+    <div id="tableDiv">
+        <table id="Table">
+            <thead>
+                <tr>
+                    <th id='studentNumber'>#</th>
+                    <th>שם פרטי</th>
+                    <th>שם משפחה</th>
+                    <th>גיל</th>
+                    <th>מקצוע</th>
+                </tr>
+            </thead>
+            <tbody id="studentElement">
+            </tbody>
+        </table>
+
+    </div>
+    <input type="button" id="addStudent" value="הוסף סטודנט" onclick="addStudentInfo()"></input>
+    <form id="studentInfo">
+        <input type="text" id="stdName">:שם פרטי</input>
+        <br>
+        <input type="text" id="stdLastName">:שם משפחה</input>
+        <br>
+        <input type="text" id="stdAge">:גיל</input>
+        <br>
+        <input type="text" id="stdPref">:מקצוע</input>
+        <br>
+        <input type="button" id="submit" onclick="submitStudent()" value="הוסף סטודנט"></input>
+    </form>
+    <div id="parentFormElem">
+        <form id="updateStudent">
+            <input type="text" id="UstdName">:שם פרטי</input>
+            <br>
+            <input type="text" id="UstdLastName">:שם משפחה</input>
+            <br>
+            <input type="text" id="UstdAge">:גיל</input>
+            <br>
+            <input type="text" id="UstdPref">:מקצוע</input>
+            <br>
+            <input type="button" id="update" value="עדכן סטודנט"></input>
+        </form>
+    </div>
+</body>
+</html>
